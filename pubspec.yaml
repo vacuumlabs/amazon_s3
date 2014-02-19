@@ -1,6 +1,6 @@
 name: amazon_s3
-version: 0.0.1
 author: Clean Team <clean@vacuumlabs.com>
+version: 0.0.2
 homepage: http://vacuumlabs.com/
 description: Amazon S3 API
 environment:
@@ -8,3 +8,4 @@ environment:
 dependencies:
   crypto: '>=0.9.0 <0.10.0'
   intl: any
+  logging: any

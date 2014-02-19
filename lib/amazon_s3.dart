@@ -7,9 +7,12 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:path/path.dart' as path;
+import 'package:logging/logging.dart';
+
 
 part "src/ext2ContentType.dart";
 
+Logger logger = new Logger('amazon_s3');
 
 class AmazonUploader {
   String _userName;
@@ -73,8 +76,8 @@ class AmazonUploader {
                           "$canonicalizedResource";
     HMAC hmac = _hmacFactory();
     Utf8Codec codec = new Utf8Codec();
-    print("to sign:\n$stringToSign");
-    print("end of to sign");
+    logger.fine("to sign:\n$stringToSign");
+    logger.fine("end of to sign");
     List<int> encodedToSign = codec.encode(stringToSign);
     hmac.add(encodedToSign);
     List<int> signed = hmac.close();
@@ -128,11 +131,11 @@ class AmazonUploader {
         request.headers.add(HttpHeaders.AUTHORIZATION, authorization);
 
         if (content != null) {
-          print("upl: ${content.path}");
+          logger.fine("upl: ${content.path}");
           request.add(content.readAsBytesSync());
-          print("done upl: ${content.path}");
+          logger.fine("done upl: ${content.path}");
         }
-        print(request.headers);
+        logger.fine('${request.headers}');
         return request.close();
       });
 
