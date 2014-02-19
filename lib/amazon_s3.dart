@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:path/path.dart' as path;
 import 'package:logging/logging.dart';
+import 'package:quiver/async.dart';
 
 
 part "src/ext2ContentType.dart";
@@ -90,10 +91,18 @@ class AmazonUploader {
   Future upload(String fromFilePath, String toFilePath, String bucket, [bool cache = false]){
     HttpClient client = new HttpClient();
     File fileToUpload = new File(fromFilePath);
-    return _createRequest('PUT', toFilePath, bucket, fileToUpload, cache)
-        .then((HttpClientResponse response) {
-        });
+    Function createRequest = (_) =>  _createRequest('PUT', toFilePath, bucket, fileToUpload, cache)
+        .then((_) => false)
+        .catchError((e, s){
+          if (e is SocketException || e is HttpException){
+            return new Future.delayed(new Duration(milliseconds: 100), () => true);
+          } else {
+            logger.shout('error: ', e, s);
+            throw e;
+          }
+         });
 
+    return doWhileAsync(new List.filled(1000, null), createRequest);
   }
 
   Future delete(String filePath, String bucket){
