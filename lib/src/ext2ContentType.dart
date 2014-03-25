@@ -1,4 +1,4 @@
-part of amazon_S3;
+//part of amazon_S3;
 
 String getContentTypeByExtension(String strExtension)
 {

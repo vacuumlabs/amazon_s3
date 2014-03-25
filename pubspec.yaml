@@ -1,8 +1,8 @@
 name: amazon_s3
+version: 0.1.0
 author: Clean Team <clean@vacuumlabs.com>
-version: 0.0.3
-homepage: http://vacuumlabs.com/
 description: Amazon S3 API
+homepage: http://vacuumlabs.com/
 environment:
   sdk: '>=0.8.10+6 <2.0.0'
 dependencies:

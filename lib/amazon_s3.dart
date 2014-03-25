@@ -1,4 +1,3 @@
-
 library amazon_S3;
 
 import 'package:crypto/crypto.dart';
@@ -6,34 +5,121 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:async';
-import 'package:path/path.dart' as path;
 import 'package:logging/logging.dart';
 import 'package:quiver/async.dart';
 
+Logger logger = new Logger('S3Bucket');
 
-part "src/ext2ContentType.dart";
-
-Logger logger = new Logger('amazon_s3');
-
-class AmazonUploader {
+class S3Bucket {
   String _userName;
   String _accessKeyId;
   List<int> _secretAccessKey;
   final _hmacFactory;
   String _host;
+  String bucket;
 
-  AmazonUploader.config(this._userName, this._accessKeyId, this._secretAccessKey, this._hmacFactory, this._host);
+  HttpClient client = new HttpClient();
+  getUrl (path) => Uri.parse('$_host/$bucket/$path');
 
-  AmazonUploader(String userName, String accessKeyId, List<int> secretAccessKey, [String host = 's3.amazonaws.com']) :
-    this.config(userName, accessKeyId, secretAccessKey, () => new HMAC(new SHA1(), secretAccessKey), host);
+  S3Bucket.config(this._userName, this._accessKeyId, secretAccessKey,
+      this._host, this.bucket, this._hmacFactory);
+
+  S3Bucket(String userName, String accessKeyId, String secretAccessKey,
+                 String host, String bucket) :
+    this.config(userName, accessKeyId, secretAccessKey, host, bucket,
+        () => new HMAC(new SHA1(), new Utf8Codec().encode(secretAccessKey)));
+
+  /**
+   * Uploads data to path $host/$bucket/$path
+   */
+  Future upload(List<int> data, String path, {ContentType contentType,
+    int maxAge, int trials: 100}) {
+    // TODO use maxAge
+    var ct = contentType == null ? '' : contentType.toString();
+    return _repeatMoreTimes(() => _put(path, data, ct), trials);
+  }
+
+  Future delete(String path) {
+    return client.openUrl('DELETE', getUrl(path))
+      .then((HttpClientRequest request) {
+        DateTime now = new DateTime.now();
+        request.headers.date = now;
+        Map amzHeaders = {};
+        var contentType = '';
+        request.headers.add(HttpHeaders.ACCEPT_ENCODING, 'deflate');
+        String authorization = _getAuthorization(path, 'DELETE', '', contentType,
+            now, bucket, amzHeaders: amzHeaders);
+        request.headers.add(HttpHeaders.AUTHORIZATION, authorization);
+
+        return request.close();
+    }).then((HttpClientResponse response) {
+      return _examineResponse(response, 'uploading');
+    });
+  }
+
+  _put(String path, List<int> data, String contentType) {
+    return client.openUrl('PUT', getUrl(path))
+        .then((HttpClientRequest request) {
+      DateTime now = new DateTime.now();
+      request.headers.date = now;
+      request.headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+      request.headers.add(HttpHeaders.CONTENT_LENGTH, data.length);
+      request.headers.add(HttpHeaders.CONNECTION, 'keep-alive');
+      request.headers.add(HttpHeaders.CONNECTION, 'keep-alive');
+      request.headers.add('x-amz-acl', 'public-read');
+      request.headers.add(HttpHeaders.ACCEPT_ENCODING, 'deflate');
+
+      var amzHeaders = {'x-amz-acl': 'public-read'};
+      String authorization = _getAuthorization(path, 'PUT', '', contentType,
+          now, bucket, amzHeaders: amzHeaders);
+      request.headers.add(HttpHeaders.AUTHORIZATION, authorization);
+
+      request.add(data);
+      return request.close();
+    }).then((HttpClientResponse response) {
+      return _examineResponse(response, 'uploading');
+    });
+  }
+
+  _examineResponse(HttpClientResponse response, String operation) {
+    if (response.statusCode == 200) logger.fine('File $operation successful.');
+    else {
+      response.transform(UTF8.decoder).toList().then((data) {
+          var message =
+              'File $operation not successful!\n'
+              'Status code: ${response.statusCode}\n'
+              'Reason phrase: ${response.reasonPhrase}\n'
+              'Response body:\n${data.join('')}\n';
+          throw new Exception(message);
+      });
+    }
+  }
+
+  _repeatMoreTimes(Function toCall, num trials) {
+    var _toCall = (_) => toCall().then((_) => false).catchError((e, s) {
+      if (e is SocketException || e is HttpException) {
+        logger.fine('Repeating upload due to exception:\n$e');
+        return new Future.delayed(new Duration(milliseconds: 100), () => true);
+      }
+      else {
+        logger.shout('Error: \n', e, s);
+        throw e;
+      }
+    });
+    return doWhileAsync(new List.filled(trials, null), _toCall);
+  }
+
   /*
-   * subresources: {nameOfSubresource: value} if subresource doesn't have value, then value = ""
+   * subresources: {nameOfSubresource: value} if subresource doesn't have value,
+   * then value = ""
    * TODO: request specifies query for canonicalResource
    * */
   String _getAuthorization(String path, String httpVerb, String contentMD5,
-                           String contentType, String date, String bucket,
+                           String contentType, DateTime now, String bucket,
                            {Map<String, String> subresources: const {},
                              Map<String, String> amzHeaders: const {}}){
+    String date = new DateFormat("E, d MMM y HH:mm:ss 'GMT'").format(now.toUtc());
+
     String canonicalizedResource = "";
     canonicalizedResource += bucket == "" ? "/" : "/$bucket/$path";
     if (subresources.isNotEmpty) {
@@ -77,8 +163,8 @@ class AmazonUploader {
                           "$canonicalizedResource";
     HMAC hmac = _hmacFactory();
     Utf8Codec codec = new Utf8Codec();
-    logger.fine("to sign:\n$stringToSign");
-    logger.fine("end of to sign");
+    logger.fine("Signature:\n$stringToSign");
+    logger.fine("...end of signature.");
     List<int> encodedToSign = codec.encode(stringToSign);
     hmac.add(encodedToSign);
     List<int> signed = hmac.close();
@@ -86,70 +172,4 @@ class AmazonUploader {
     String authorization = "AWS $_accessKeyId:$signature";
     return authorization;
   }
-
-
-  Future upload(String fromFilePath, String toFilePath, String bucket, [bool cache = false]){
-    HttpClient client = new HttpClient();
-    File fileToUpload = new File(fromFilePath);
-    Function createRequest = (_) =>  _createRequest('PUT', toFilePath, bucket, fileToUpload, cache)
-        .then((_) => false)
-        .catchError((e, s){
-          if (e is SocketException || e is HttpException){
-            return new Future.delayed(new Duration(milliseconds: 100), () => true);
-          } else {
-            logger.shout('error: ', e, s);
-            throw e;
-          }
-         });
-
-    return doWhileAsync(new List.filled(1000, null), createRequest);
-  }
-
-  Future delete(String filePath, String bucket){
-    HttpClient client = new HttpClient();
-    return _createRequest('DELETE', filePath, bucket)
-        .then((HttpClientResponse response) {
-        });
-  }
-
-  Future _createRequest(String method, String filePath, String bucket, [File content, bool cache = false]){
-    HttpClient client = new HttpClient();
-    return client.openUrl(method, Uri.parse('$_host/$bucket/$filePath'))
-      .then((HttpClientRequest request) {
-        DateTime now = new DateTime.now();
-        request.headers.date = now;
-        String contentType = '';
-        Map amzHeaders = {};
-        if (content != null) {
-          String ext = path.extension(content.path);
-          contentType = getContentTypeByExtension(ext.toLowerCase());
-          request.headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-          request.headers.add(HttpHeaders.CONTENT_LENGTH, content.lengthSync());
-          request.headers.add(HttpHeaders.CONNECTION, 'keep-alive');
-          request.headers.add(HttpHeaders.CONNECTION, 'keep-alive');
-          request.headers.add('x-amz-acl', 'public-read');
-          amzHeaders['x-amz-acl'] = 'public-read';
-          if (cache) {
-            request.headers.add('x-amz-meta-Cache-Control', 'max-age=2592000');
-            amzHeaders['x-amz-meta-Cache-Control'] = 'max-age=2592000';
-          }
-        }
-        request.headers.add(HttpHeaders.ACCEPT_ENCODING, 'deflate');
-        String nowString = new DateFormat("E, d MMM y HH:mm:ss 'GMT'").format(now.toUtc());
-        String authorization = _getAuthorization(filePath, method, '', contentType, nowString, bucket, amzHeaders: amzHeaders);
-        request.headers.add(HttpHeaders.AUTHORIZATION, authorization);
-
-        if (content != null) {
-          logger.fine("upl: ${content.path}");
-          request.add(content.readAsBytesSync());
-          logger.fine("done upl: ${content.path}");
-        }
-        logger.fine('${request.headers}');
-        return request.close();
-      });
-
-  }
 }
-
-
-
