@@ -82,7 +82,8 @@ class S3Bucket {
   }
 
   _examineResponse(HttpClientResponse response, String operation) {
-    if (response.statusCode == 200) logger.fine('File $operation successful.');
+    if (response.statusCode == 200 || response.statusCode == 204)
+      logger.fine('File $operation successful. Status code: ${response.statusCode}');
     else {
       response.transform(UTF8.decoder).toList().then((data) {
           var message =
