@@ -120,6 +120,9 @@ class S3Bucket {
                            {Map<String, String> subresources: const {},
                              Map<String, String> amzHeaders: const {}}){
     String date = new DateFormat("E, d MMM y HH:mm:ss 'GMT'").format(now.toUtc());
+    // HACK: amazon apparently formats time 09:27:01 as 9:27:01 (and similar)
+    // TODO research on this problem is needed
+    date.replaceAll('09', '9');
 
     String canonicalizedResource = "";
     canonicalizedResource += bucket == "" ? "/" : "/$bucket/$path";
