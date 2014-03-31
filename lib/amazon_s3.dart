@@ -3,7 +3,6 @@ library amazon_S3;
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:quiver/async.dart';
@@ -119,10 +118,7 @@ class S3Bucket {
                            String contentType, DateTime now, String bucket,
                            {Map<String, String> subresources: const {},
                              Map<String, String> amzHeaders: const {}}){
-    String date = new DateFormat("E, d MMM y HH:mm:ss 'GMT'").format(now.toUtc());
-    // HACK: amazon apparently formats time 09:27:01 as 9:27:01 (and similar)
-    // TODO research on this problem is needed
-    date = date.replaceAll('09', '9');
+    String date = HttpDate.format(now.toUtc());
 
     String canonicalizedResource = "";
     canonicalizedResource += bucket == "" ? "/" : "/$bucket/$path";
