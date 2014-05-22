@@ -28,6 +28,10 @@ class S3Bucket {
     this.config(userName, accessKeyId, secretAccessKey, host, bucket,
         () => new HMAC(new SHA1(), new Utf8Codec().encode(secretAccessKey)));
 
+  S3Bucket subDir(String name) =>
+      new S3Bucket.config(_userName, _accessKeyId, _secretAccessKey, _host,
+          '$bucket/$name', _hmacFactory);
+
   /**
    * Uploads data to path $host/$bucket/$path
    */
