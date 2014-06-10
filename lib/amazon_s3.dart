@@ -1,11 +1,15 @@
 library amazon_S3;
 
-import 'package:crypto/crypto.dart';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:async';
+import 'package:crypto/crypto.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as path;
 import 'package:quiver/async.dart';
+
+part 'src/upload_directory.dart';
+part 'src/ext2ContentType.dart';
 
 Logger logger = new Logger('S3Bucket');
 

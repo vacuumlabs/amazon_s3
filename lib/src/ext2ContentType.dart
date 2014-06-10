@@ -1,467 +1,287 @@
-//part of amazon_S3;
+part of amazon_S3;
 
-String getContentTypeByExtension(String strExtension)
-{
-    switch (strExtension)
-    {
-        case ".fif":
-            return "application/fractals";
-            break;
+ContentType getContentTypeByExtension(String strExtension) {
+  switch (strExtension) {
+    case ".fif":
+      return new ContentType("application", "fractals");
 
-        case ".hta":
-            return "application/hta";
-            break;
+    case ".hta":
+      return new ContentType("application", "hta");
 
-        case ".hqx":
-            return "application/mac-binhex40";
-            break;
+    case ".hqx":
+      return new ContentType("application", "mac-binhex40");
 
-        case ".vsi":
-            return "application/ms-vsi";
-            break;
+    case ".vsi":
+      return new ContentType("application", "ms-vsi");
 
-        case ".p10":
-            return "application/pkcs10";
-            break;
+    case ".p10":
+      return new ContentType("application", "pkcs10");
 
-        case ".p7m":
+    case ".p7m":
+      return new ContentType("application", "pkcs7-mime");
 
-            return "application/pkcs7-mime";
-            break;
+    case ".p7s":
+      return new ContentType("application", "pkcs7-signature");
 
-        case ".p7s":
+    case ".cer":
+      return new ContentType("application", "pkix-cert");
 
-            return "application/pkcs7-signature";
-            break;
+    case ".crl":
+      return new ContentType("application", "pkix-crl");
 
-        case ".cer":
+    case ".ps":
+      return new ContentType("application", "postscript");
 
-            return "application/pkix-cert";
-            break;
+    case ".setpay":
+      return new ContentType("application", "set-payment-initiation");
 
-        case ".crl":
+    case ".setreg":
+      return new ContentType("application", "set-registration-initiation");
 
-            return "application/pkix-crl";
-            break;
+    case ".sst":
+      return new ContentType("application", "vnd.ms-pki.certstore");
 
-        case ".ps":
+    case ".pko":
+      return new ContentType("application", "vnd.ms-pki.pko");
 
-            return "application/postscript";
-            break;
+    case ".cat":
+      return new ContentType("application", "vnd.ms-pki.seccat");
 
-        case ".setpay":
+    case ".stl":
+      return new ContentType("application", "vnd.ms-pki.stl");
 
-            return "application/set-payment-initiation";
-            break;
+    case ".wpl":
+      return new ContentType("application", "vnd.ms-wpl");
 
-        case ".setreg":
+    case ".xps":
+      return new ContentType("application", "vnd.ms-xpsdocument");
 
-            return "application/set-registration-initiation";
-            break;
+    case ".z":
+      return new ContentType("application", "x-compress");
 
-        case ".sst":
+    case ".tgz":
+      return new ContentType("application", "x-compressed");
 
-            return "application/vnd.ms-pki.certstore";
-            break;
+    case ".gz":
+      return new ContentType("application", "x-gzip");
 
-        case ".pko":
+    case ".ins":
+      return new ContentType("application", "x-internet-signup");
 
-            return "application/vnd.ms-pki.pko";
-            break;
+    case ".iii":
+      return new ContentType("application", "x-iphone");
 
-        case ".cat":
+    case ".jtx":
+      return new ContentType("application", "x-jtx+xps");
 
-            return "application/vnd.ms-pki.seccat";
-            break;
+    case ".latex":
+      return new ContentType("application", "x-latex");
 
-        case ".stl":
+    case ".nix":
+      return new ContentType("application", "x-mix-transfer");
 
-            return "application/vnd.ms-pki.stl";
-            break;
+    case ".asx":
+      return new ContentType("application", "x-mplayer2");
 
-        case ".wpl":
+    case ".application":
+      return new ContentType("application", "x-ms-application");
 
-            return "application/vnd.ms-wpl";
-            break;
+    case ".wmd":
+      return new ContentType("application", "x-ms-wmd");
 
-        case ".xps":
+    case ".wmz":
+      return new ContentType("application", "x-ms-wmz");
 
-            return "application/vnd.ms-xpsdocument";
-            break;
+    case ".xbap":
+      return new ContentType("application", "x-ms-xbap");
 
-        case ".z":
+    case ".p12":
+      return new ContentType("application", "x-pkcs12");
 
-            return "application/x-compress";
-            break;
+    case ".p7b":
+      return new ContentType("application", "x-pkcs7-certificates");
 
-        case ".tgz":
+    case ".p7r":
+      return new ContentType("application", "x-pkcs7-certreqresp");
 
-            return "application/x-compressed";
-            break;
+    case ".sit":
+      return new ContentType("application", "x-stuffit");
 
-        case ".gz":
+    case ".tar":
+      return new ContentType("application", "x-tar");
 
-            return "application/x-gzip";
-            break;
+    case ".man":
+      return new ContentType("application", "x-troff-man");
 
-        case ".ins":
+    case ".cer":
+      return new ContentType("application", "x-x509-ca-cert");
 
-            return "application/x-internet-signup";
-            break;
+    case ".zip":
+      return new ContentType("application", "x-zip-compressed");
 
-        case ".iii":
+    case ".xaml":
+      return new ContentType("application", "xaml+xml");
 
-            return "application/x-iphone";
-            break;
+    case ".xml":
+      return new ContentType("application", "xml");
 
-        case ".jtx":
+    case ".aiff":
+      return new ContentType("audio", "aiff");
 
-            return "application/x-jtx+xps";
-            break;
+    case ".au":
+      return new ContentType("audio", "basic");
 
-        case ".latex":
+    case ".mid":
+      return new ContentType("audio", "mid");
 
-            return "application/x-latex";
-            break;
+    case ".mid":
+      return new ContentType("audio", "midi");
 
-        case ".nix":
+    case ".mp3":
+      return new ContentType("audio", "mp3");
 
-            return "application/x-mix-transfer";
-            break;
+    case ".mp3":
+      return new ContentType("audio", "mpeg");
 
-        case ".asx":
+    case ".m3u":
+      return new ContentType("audio", "mpegurl");
 
-            return "application/x-mplayer2";
-            break;
+    case ".mp3":
+      return new ContentType("audio", "mpg");
 
-        case ".application":
+    case ".wav":
+      return new ContentType("audio", "wav");
 
-            return "application/x-ms-application";
-            break;
+    case ".aiff":
+      return new ContentType("audio", "x-aiff");
 
-        case ".wmd":
+    case ".mid":
+      return new ContentType("audio", "x-mid");
 
-            return "application/x-ms-wmd";
-            break;
+    case ".mid":
+      return new ContentType("audio", "x-midi");
 
-        case ".wmz":
+    case ".mp3":
+      return new ContentType("audio", "x-mp3");
 
-            return "application/x-ms-wmz";
-            break;
+    case ".mp3":
+      return new ContentType("audio", "x-mpeg");
 
-        case ".xbap":
+    case ".m3u":
+      return new ContentType("audio", "x-mpegurl");
 
-            return "application/x-ms-xbap";
-            break;
+    case ".mp3":
+      return new ContentType("audio", "x-mpg");
 
-        case ".p12":
+    case ".wax":
+      return new ContentType("audio", "x-ms-wax");
 
-            return "application/x-pkcs12";
-            break;
+    case ".wma":
+      return new ContentType("audio", "x-ms-wma");
 
-        case ".p7b":
+    case ".wav":
+      return new ContentType("audio", "x-wav");
 
-            return "application/x-pkcs7-certificates";
-            break;
+    case ".bmp":
+      return new ContentType("image", "bmp");
 
-        case ".p7r":
+    case ".gif":
+      return new ContentType("image", "gif");
 
-            return "application/x-pkcs7-certreqresp";
-            break;
+    case ".jpg":
+      return new ContentType("image", "jpeg");
 
-        case ".sit":
+    case ".jpeg":
+      return new ContentType("image", "jpeg");
 
-            return "application/x-stuffit";
-            break;
+    case ".png":
+      return new ContentType("image", "png");
 
-        case ".tar":
+    case ".tiff":
+      return new ContentType("image", "tiff");
 
-            return "application/x-tar";
-            break;
+    case ".ico":
+      return new ContentType("image", "x-icon");
 
-        case ".man":
+    case ".png":
+      return new ContentType("image", "x-png");
 
-            return "application/x-troff-man";
-            break;
+    case ".mid":
+      return new ContentType("midi", "mid");
 
-        case ".cer":
+    case ".dwfx":
+      return new ContentType("model", "vnd.dwfx+xps");
 
-            return "application/x-x509-ca-cert";
-            break;
+    case ".css":
+      return new ContentType("text", "css");
 
-        case ".zip":
+    case ".323":
+      return new ContentType("text", "h323");
 
-            return "application/x-zip-compressed";
-            break;
+    case ".htm":
+      return new ContentType("text", "html");
 
-        case ".xaml":
+    case ".uls":
+      return new ContentType("text", "iuls");
 
-            return "application/xaml+xml";
-            break;
+    case ".txt":
+      return new ContentType("text", "plain");
 
-        case ".xml":
+    case ".wsc":
+      return new ContentType("text", "scriptlet");
 
-            return "application/xml";
-            break;
+    case ".htt":
+      return new ContentType("text", "webviewhtml");
 
-        case ".aiff":
+    case ".htc":
+      return new ContentType("text", "x-component");
 
-            return "audio/aiff";
-            break;
+    case ".vcf":
+      return new ContentType("text", "x-vcard");
 
-        case ".au":
+    case ".xml":
+      return new ContentType("text", "xml");
 
-            return "audio/basic";
-            break;
+    case ".avi":
+      return new ContentType("video", "avi");
 
-        case ".mid":
+    case ".mpeg":
+      return new ContentType("video", "mpeg");
 
-            return "audio/mid";
-            break;
+    case ".mpeg":
+      return new ContentType("video", "mpg");
 
-        case ".mid":
+    case ".avi":
+      return new ContentType("video", "msvideo");
 
-            return "audio/midi";
-            break;
+    case ".mpeg":
+      return new ContentType("video", "x-mpeg");
 
-        case ".mp3":
+    case ".mpeg":
+      return new ContentType("video", "x-mpeg2a");
 
-            return "audio/mp3";
-            break;
+    case ".asx":
+      return new ContentType("video", "x-ms-asf");
 
-        case ".mp3":
+    case ".asx":
+      return new ContentType("video", "x-ms-asf-plugin");
 
-            return "audio/mpeg";
-            break;
+    case ".wm":
+      return new ContentType("video", "x-ms-wm");
 
-        case ".m3u":
+    case ".wmv":
+      return new ContentType("video", "x-ms-wmv");
 
-            return "audio/mpegurl";
-            break;
+    case ".wmx":
+      return new ContentType("video", "x-ms-wmx");
 
-        case ".mp3":
+    case ".wvx":
+      return new ContentType("video", "x-ms-wvx");
 
-            return "audio/mpg";
-            break;
+    case ".avi":
+      return new ContentType("video", "x-msvideo");
 
-        case ".wav":
-
-            return "audio/wav";
-            break;
-
-        case ".aiff":
-
-            return "audio/x-aiff";
-            break;
-
-        case ".mid":
-
-            return "audio/x-mid";
-            break;
-
-        case ".mid":
-
-            return "audio/x-midi";
-            break;
-
-        case ".mp3":
-
-            return "audio/x-mp3";
-            break;
-
-        case ".mp3":
-
-            return "audio/x-mpeg";
-            break;
-
-        case ".m3u":
-
-            return "audio/x-mpegurl";
-            break;
-
-        case ".mp3":
-
-            return "audio/x-mpg";
-            break;
-
-        case ".wax":
-
-            return "audio/x-ms-wax";
-            break;
-
-        case ".wma":
-
-            return "audio/x-ms-wma";
-            break;
-
-        case ".wav":
-
-            return "audio/x-wav";
-            break;
-
-        case ".bmp":
-
-            return "image/bmp";
-            break;
-
-        case ".gif":
-
-            return "image/gif";
-            break;
-
-        case ".jpg":
-
-            return "image/jpeg";
-            break;
-
-        case ".jpeg":
-
-            return "image/jpeg";
-            break;
-
-        case ".png":
-
-            return "image/png";
-            break;
-
-        case ".tiff":
-
-            return "image/tiff";
-            break;
-
-        case ".ico":
-
-            return "image/x-icon";
-            break;
-
-        case ".png":
-
-            return "image/x-png";
-            break;
-
-        case ".mid":
-
-            return "midi/mid";
-            break;
-
-        case ".dwfx":
-
-            return "model/vnd.dwfx+xps";
-            break;
-
-        case ".css":
-
-            return "text/css";
-            break;
-
-        case ".323":
-
-            return "text/h323";
-            break;
-
-        case ".htm":
-
-            return "text/html";
-            break;
-
-        case ".uls":
-
-            return "text/iuls";
-            break;
-
-        case ".txt":
-
-            return "text/plain";
-            break;
-
-        case ".wsc":
-
-            return "text/scriptlet";
-            break;
-
-        case ".htt":
-
-            return "text/webviewhtml";
-            break;
-
-        case ".htc":
-
-            return "text/x-component";
-            break;
-
-        case ".vcf":
-
-            return "text/x-vcard";
-            break;
-
-        case ".xml":
-
-            return "text/xml";
-            break;
-
-        case ".avi":
-
-            return "video/avi";
-            break;
-
-        case ".mpeg":
-
-            return "video/mpeg";
-            break;
-
-        case ".mpeg":
-
-            return "video/mpg";
-            break;
-
-        case ".avi":
-
-            return "video/msvideo";
-            break;
-
-        case ".mpeg":
-
-            return "video/x-mpeg";
-            break;
-
-        case ".mpeg":
-
-            return "video/x-mpeg2a";
-            break;
-
-        case ".asx":
-
-            return "video/x-ms-asf";
-            break;
-
-        case ".asx":
-
-            return "video/x-ms-asf-plugin";
-            break;
-
-        case ".wm":
-
-            return "video/x-ms-wm";
-            break;
-
-        case ".wmv":
-
-            return "video/x-ms-wmv";
-            break;
-
-        case ".wmx":
-
-            return "video/x-ms-wmx";
-            break;
-
-        case ".wvx":
-
-            return "video/x-ms-wvx";
-            break;
-
-        case ".avi":
-
-            return "video/x-msvideo";
-            break;
-    }
+    default:
+      return null;
+  }
 }
