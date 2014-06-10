@@ -9,17 +9,11 @@ Future uploadDirectory(S3Bucket s3bucket, Directory dir) {
       .then((fses) => forEachAsync(fses, (FileSystemEntity fse) {
         if (fse is! File) return new Future.value(null);
         File f = fse;
-        var path = relativePath(dir, f);
-        logger.finest('Uploading file ${path}.');
+        var relPath = path.relative(f.path, from: dir.path);
+        logger.finest('Uploading file ${relPath}.');
         ContentType ct = getContentTypeByExtension(f.path.split('.').last);
 
         return f.readAsBytes()
-            .then((data) => s3bucket.upload(data, path, contentType: ct));
+            .then((data) => s3bucket.upload(data, relPath, contentType: ct));
       }, maxTasks: 10));
-}
-
-relativePath(Directory dir, FileSystemEntity f) {
-  var relative = f.path.replaceFirst(dir.path, '');
-  if (relative.startsWith('/')) relative = relative.replaceFirst('/', '');
-  return relative;
 }
