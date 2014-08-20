@@ -2,283 +2,283 @@ part of amazon_S3;
 
 ContentType getContentTypeByExtension(String strExtension) {
   switch (strExtension) {
-    case ".fif":
+    case "fif":
       return new ContentType("application", "fractals");
 
-    case ".hta":
+    case "hta":
       return new ContentType("application", "hta");
 
-    case ".hqx":
+    case "hqx":
       return new ContentType("application", "mac-binhex40");
 
-    case ".vsi":
+    case "vsi":
       return new ContentType("application", "ms-vsi");
 
-    case ".p10":
+    case "p10":
       return new ContentType("application", "pkcs10");
 
-    case ".p7m":
+    case "p7m":
       return new ContentType("application", "pkcs7-mime");
 
-    case ".p7s":
+    case "p7s":
       return new ContentType("application", "pkcs7-signature");
 
-    case ".cer":
+    case "cer":
       return new ContentType("application", "pkix-cert");
 
-    case ".crl":
+    case "crl":
       return new ContentType("application", "pkix-crl");
 
-    case ".ps":
+    case "ps":
       return new ContentType("application", "postscript");
 
-    case ".setpay":
+    case "setpay":
       return new ContentType("application", "set-payment-initiation");
 
-    case ".setreg":
+    case "setreg":
       return new ContentType("application", "set-registration-initiation");
 
-    case ".sst":
+    case "sst":
       return new ContentType("application", "vnd.ms-pki.certstore");
 
-    case ".pko":
+    case "pko":
       return new ContentType("application", "vnd.ms-pki.pko");
 
-    case ".cat":
+    case "cat":
       return new ContentType("application", "vnd.ms-pki.seccat");
 
-    case ".stl":
+    case "stl":
       return new ContentType("application", "vnd.ms-pki.stl");
 
-    case ".wpl":
+    case "wpl":
       return new ContentType("application", "vnd.ms-wpl");
 
-    case ".xps":
+    case "xps":
       return new ContentType("application", "vnd.ms-xpsdocument");
 
-    case ".z":
+    case "z":
       return new ContentType("application", "x-compress");
 
-    case ".tgz":
+    case "tgz":
       return new ContentType("application", "x-compressed");
 
-    case ".gz":
+    case "gz":
       return new ContentType("application", "x-gzip");
 
-    case ".ins":
+    case "ins":
       return new ContentType("application", "x-internet-signup");
 
-    case ".iii":
+    case "iii":
       return new ContentType("application", "x-iphone");
 
-    case ".jtx":
+    case "jtx":
       return new ContentType("application", "x-jtx+xps");
 
-    case ".latex":
+    case "latex":
       return new ContentType("application", "x-latex");
 
-    case ".nix":
+    case "nix":
       return new ContentType("application", "x-mix-transfer");
 
-    case ".asx":
+    case "asx":
       return new ContentType("application", "x-mplayer2");
 
-    case ".application":
+    case "application":
       return new ContentType("application", "x-ms-application");
 
-    case ".wmd":
+    case "wmd":
       return new ContentType("application", "x-ms-wmd");
 
-    case ".wmz":
+    case "wmz":
       return new ContentType("application", "x-ms-wmz");
 
-    case ".xbap":
+    case "xbap":
       return new ContentType("application", "x-ms-xbap");
 
-    case ".p12":
+    case "p12":
       return new ContentType("application", "x-pkcs12");
 
-    case ".p7b":
+    case "p7b":
       return new ContentType("application", "x-pkcs7-certificates");
 
-    case ".p7r":
+    case "p7r":
       return new ContentType("application", "x-pkcs7-certreqresp");
 
-    case ".sit":
+    case "sit":
       return new ContentType("application", "x-stuffit");
 
-    case ".tar":
+    case "tar":
       return new ContentType("application", "x-tar");
 
-    case ".man":
+    case "man":
       return new ContentType("application", "x-troff-man");
 
-    case ".cer":
+    case "cer":
       return new ContentType("application", "x-x509-ca-cert");
 
-    case ".zip":
+    case "zip":
       return new ContentType("application", "x-zip-compressed");
 
-    case ".xaml":
+    case "xaml":
       return new ContentType("application", "xaml+xml");
 
-    case ".xml":
-      return new ContentType("application", "xml");
+    case "xml":
+      return new ContentType("application", "xml", charset: 'UTF-8');
 
-    case ".aiff":
+    case "aiff":
       return new ContentType("audio", "aiff");
 
-    case ".au":
+    case "au":
       return new ContentType("audio", "basic");
 
-    case ".mid":
+    case "mid":
       return new ContentType("audio", "mid");
 
-    case ".mid":
+    case "mid":
       return new ContentType("audio", "midi");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "mp3");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "mpeg");
 
-    case ".m3u":
+    case "m3u":
       return new ContentType("audio", "mpegurl");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "mpg");
 
-    case ".wav":
+    case "wav":
       return new ContentType("audio", "wav");
 
-    case ".aiff":
+    case "aiff":
       return new ContentType("audio", "x-aiff");
 
-    case ".mid":
+    case "mid":
       return new ContentType("audio", "x-mid");
 
-    case ".mid":
+    case "mid":
       return new ContentType("audio", "x-midi");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "x-mp3");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "x-mpeg");
 
-    case ".m3u":
+    case "m3u":
       return new ContentType("audio", "x-mpegurl");
 
-    case ".mp3":
+    case "mp3":
       return new ContentType("audio", "x-mpg");
 
-    case ".wax":
+    case "wax":
       return new ContentType("audio", "x-ms-wax");
 
-    case ".wma":
+    case "wma":
       return new ContentType("audio", "x-ms-wma");
 
-    case ".wav":
+    case "wav":
       return new ContentType("audio", "x-wav");
 
-    case ".bmp":
+    case "bmp":
       return new ContentType("image", "bmp");
 
-    case ".gif":
+    case "gif":
       return new ContentType("image", "gif");
 
-    case ".jpg":
+    case "jpg":
       return new ContentType("image", "jpeg");
 
-    case ".jpeg":
+    case "jpeg":
       return new ContentType("image", "jpeg");
 
-    case ".png":
+    case "png":
       return new ContentType("image", "png");
 
-    case ".tiff":
+    case "tiff":
       return new ContentType("image", "tiff");
 
-    case ".ico":
+    case "ico":
       return new ContentType("image", "x-icon");
 
-    case ".png":
+    case "png":
       return new ContentType("image", "x-png");
 
-    case ".mid":
+    case "mid":
       return new ContentType("midi", "mid");
 
-    case ".dwfx":
+    case "dwfx":
       return new ContentType("model", "vnd.dwfx+xps");
 
-    case ".css":
+    case "css":
       return new ContentType("text", "css");
 
-    case ".323":
+    case "323":
       return new ContentType("text", "h323");
 
-    case ".htm":
+    case "htm":
       return new ContentType("text", "html");
 
-    case ".uls":
+    case "uls":
       return new ContentType("text", "iuls");
 
-    case ".txt":
+    case "txt":
       return new ContentType("text", "plain");
 
-    case ".wsc":
+    case "wsc":
       return new ContentType("text", "scriptlet");
 
-    case ".htt":
+    case "htt":
       return new ContentType("text", "webviewhtml");
 
-    case ".htc":
+    case "htc":
       return new ContentType("text", "x-component");
 
-    case ".vcf":
+    case "vcf":
       return new ContentType("text", "x-vcard");
 
-    case ".xml":
+    case "xml":
       return new ContentType("text", "xml");
 
-    case ".avi":
+    case "avi":
       return new ContentType("video", "avi");
 
-    case ".mpeg":
+    case "mpeg":
       return new ContentType("video", "mpeg");
 
-    case ".mpeg":
+    case "mpeg":
       return new ContentType("video", "mpg");
 
-    case ".avi":
+    case "avi":
       return new ContentType("video", "msvideo");
 
-    case ".mpeg":
+    case "mpeg":
       return new ContentType("video", "x-mpeg");
 
-    case ".mpeg":
+    case "mpeg":
       return new ContentType("video", "x-mpeg2a");
 
-    case ".asx":
+    case "asx":
       return new ContentType("video", "x-ms-asf");
 
-    case ".asx":
+    case "asx":
       return new ContentType("video", "x-ms-asf-plugin");
 
-    case ".wm":
+    case "wm":
       return new ContentType("video", "x-ms-wm");
 
-    case ".wmv":
+    case "wmv":
       return new ContentType("video", "x-ms-wmv");
 
-    case ".wmx":
+    case "wmx":
       return new ContentType("video", "x-ms-wmx");
 
-    case ".wvx":
+    case "wvx":
       return new ContentType("video", "x-ms-wvx");
 
-    case ".avi":
+    case "avi":
       return new ContentType("video", "x-msvideo");
 
     default:
