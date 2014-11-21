@@ -89,10 +89,11 @@ class S3Bucket {
   }
 
   _examineResponse(HttpClientResponse response, String operation) {
-    if (response.statusCode == 200 || response.statusCode == 204)
+    if (response.statusCode == 200 || response.statusCode == 204) {
       logger.fine('File $operation successful. Status code: ${response.statusCode}');
-    else {
-      response.transform(UTF8.decoder).toList().then((data) {
+      return response.drain();
+    } else {
+      return response.transform(UTF8.decoder).toList().then((data) {
           var message =
               'File $operation not successful!\n'
               'Status code: ${response.statusCode}\n'
@@ -179,5 +180,10 @@ class S3Bucket {
     String signature = CryptoUtils.bytesToBase64(signed);
     String authorization = "AWS $_accessKeyId:$signature";
     return authorization;
+  }
+
+  Future dispose() {
+    client.close(force:true);
+    return new Future.delayed(new Duration(milliseconds: 100));
   }
 }
